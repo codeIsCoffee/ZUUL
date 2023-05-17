@@ -47,9 +47,7 @@ public class Room
     public void setItem(Item item) {
         
         items.add(item);
-    }
-
-    
+    }    
 
     /**
      * @return The short description of the room
@@ -97,5 +95,7 @@ public class Room
         return exits.get(direction);
     }
 
-    // new methods may be placed here
-  
+    public ArrayList<Item> getItems() {
+      return items;
+    }
+}
