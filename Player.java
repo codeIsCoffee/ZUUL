@@ -34,23 +34,28 @@ public class Player {
         System.out.println("You can't carry this!");
         currentWeight -= item.getWeight();
     }
+    return currentWeight;
   }
 
   public double decrementWeight(Item item) {
     if (currentWeight <= MAX_WEIGHT) {
       currentWeight -= item.getWeight();
     }
+    return currentWeight;
   }
 
   public void incrementItems() {
     currentNumOfItems += 1;
     if (currentNumOfItems < MAX_ITEMS) {
-      System.out.println("You can't get carry more items!");
+      System.out.println("You can't carry anymore items!");
     }
   }
+  
   public void decrementItems() {
     currentNumOfItems -= 1;
     if (currentNumOfItems < 0) {
       currentNumOfItems = 0;
+      System.out.println("You have no more items left!");
     }
   }
+}
