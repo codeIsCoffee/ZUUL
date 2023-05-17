@@ -12,7 +12,7 @@ public class Item {
 
   public void display() {
     if (picked == true) {
-      System.out.println("You picked up a " + item.getName());
+      System.out.println("You picked up a " + getName());
     }
   }
 
