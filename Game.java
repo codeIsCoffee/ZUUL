@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -149,7 +151,7 @@ public class Game
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Thank you for playing. Good bye.");
     }
 
     /**
@@ -160,7 +162,7 @@ public class Game
         System.out.println();
         System.out.println("Welcome to the World of Zuul!");
         System.out.println("World of Zuul is a new, incredibly fun adventure game.");
-        System.out.println("Apparently, this world is a mess, and I hear that you need to get back to Kentucky. \n You need to collect items in various rooms to enter other rooms. The inhabitants of \n the other rooms need these items to preoccupy themselves while you quietly collect \n more items to enter more rooms. Once you reach Mr. Lewin's Wildcat Kingdom, Mr. Lewin will lead you to a portal, which will get you back ot Kentucky safely. Currently, \n your in my \"Funny Hippo Location\" where we will help you get started on the \n treacherous journey \n                                                                                                              - Tahseen");
+        System.out.println("Apparently, this world is a mess, and I hear that you need to get back to Kentucky. You need to collect items in various rooms to enter other rooms. The inhabitants of the other rooms need these items to preoccupy themselves while you quietly collect more items to enter more rooms. Once you reach Mr. Lewin's Wildcat Kingdom, Mr. Lewin will lead you to a portal, which will get you back ot Kentucky safely. Currently, your in my \"Funny Hippo Location\" where we will help you get started on the treacherous journey \n                                                                                                              - Tahseen");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
@@ -191,7 +193,7 @@ public class Game
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look")) {
-            look(command);
+            lookInRoom(command);
         }
         // else command not recognised.
         return wantToQuit;
@@ -207,7 +209,7 @@ public class Game
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("around the \"nature place\".");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -231,24 +233,36 @@ public class Game
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
-            System.out.println("You can't enter this land");
+            System.out.println("You can't enter this land.");
         }
         else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
     }
-    private void look(Command command){ 
-        System.out.println("There is nothing in the room"); 
-        return; 
+    private void lookInRoom(Command command) {
+      String intro = "Here are the items: ";
+      ArrayList<Item> theOfficialItems = currentRoom.getItems();
+
+      // Alternative?
+      for (int i = 0; i < theOfficialItems.size(); i++) {
+        if (i == theOfficialItems.size() - 1) {
+          intro += theOfficialItems.get(i).getName();
+        }
+        else {
+          intro += theOfficialItems.get(i).getName() + ", ";
+        }
+       }
+      System.out.println(intro);
     }
+  
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
      */
     private boolean quit(Command command) 
-    {
+      {
         if(command.hasSecondWord()) {
             System.out.println("Quit what?");
             return false;
@@ -257,4 +271,6 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
+
+   
 }
