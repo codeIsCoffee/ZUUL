@@ -4,58 +4,41 @@ public class Player {
 
   private static final double MAX_WEIGHT = 1000;
   private static final int MAX_ITEMS = 5;
+  private ArrayList<Item> playerItems; 
   private double currentWeight;
-  private int currentNumOfItems;
 
   public Player() {
     currentWeight = 0;
-    currentNumOfItems = 0;
+    playerItems = new ArrayList<Item>();
   }
 
-  public double getWeight() {  
-    return currentWeight;
-  }
-
-  public int getItems() {
-    return currentNumOfItems;
-  }
-
-  public void setWeight(double weight) {
-    currentWeight = weight;
-  }
-
-  public void setItems(int items) {
-    currentNumOfItems = items;
-  } 
-
-  public double incrementWeight(Item item) {
-    currentWeight += item.getWeight();
-    if (currentWeight > MAX_WEIGHT) {
-        System.out.println("You can't carry this!");
-        currentWeight -= item.getWeight();
+  public void addItem(Item item) {
+    double weight = getTotalWeight() + item.getWeight();
+    if (playerItems.size() < MAX_ITEMS && weight < MAX_WEIGHT) {
+      playerItems.add(item);
     }
-    return currentWeight;
-  }
-
-  public double decrementWeight(Item item) {
-    if (currentWeight <= MAX_WEIGHT) {
-      currentWeight -= item.getWeight();
-    }
-    return currentWeight;
-  }
-
-  public void incrementItems() {
-    currentNumOfItems += 1;
-    if (currentNumOfItems < MAX_ITEMS) {
-      System.out.println("You can't carry anymore items!");
+    else {
+     System.out.print("There are too many items or too much weight!") 
     }
   }
-  
-  public void decrementItems() {
-    currentNumOfItems -= 1;
-    if (currentNumOfItems < 0) {
-      currentNumOfItems = 0;
-      System.out.println("You have no more items left!");
+
+  public int getNumItems() {
+    return playerItems.size();
+  }
+
+  public void removeItem(Item item) {
+    if (playerItems.contains(item)) {
+      playerItems.remove(item);
     }
+  }
+
+  public double getTotalWeight() {
+   double weight = 0.0;
+   for (int i = 0; i < playerItems.size(); i++) {
+      Item item = playerItems.get(i);
+      weight += item.getWeight();
+    }
+    return weight;
   }
 }
+  

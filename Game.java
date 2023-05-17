@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.util.HashMap;
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -21,14 +21,83 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Player player;
+    private HashMap<String, Item> itemMap;
+    private Room winningRoom;
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        itemMap = new HashMap<String, Item>();
+        createItems();
         createRooms();
         parser = new Parser();
+        player = new Player();
+    }
+
+    private void createItems() 
+    {
+        Item tahseenMud = new Item("mud", 8.33, false);
+        itemMap.put("mud", tahseenMud);
+      
+        Item tahseenSpecialCard = new Item("special card", 0.06, false);
+        itemMap.put("special card", tahseenSpecialCard);
+      
+        Item rhinoReed = new Item("reed", 0.22, false);
+        itemMap.put("reed", rhinoReed);
+      
+        Item rhinoBeetle = new Item("beetles", 0.22, false);
+        itemMap.put("beetles", rhinoBeetle);
+      
+        Item denMouse = new Item("mouse", 0.05, false);
+        itemMap.put("mouse", denMouse);
+      
+        Item denSalt = new Item("bucket of salt", 100, false);
+        itemMap.put("bucket of salt", denSalt);
+      
+        Item blobfishPer = new Item("A perpendicular sign that is upside down and upside down again (right side up) with Pranav’s face attached to it", 337, false);
+        itemMap.put("A perpendicular sign that is upside down and upside down again (right side up) with Pranav’s face attached to it", blobfishPer);
+      
+        Item blobfishRadio = new Item("radioactive slime", 25, false);
+        itemMap.put("radioactive slime", blobfishRadio);
+      
+        Item perchWater = new Item("watermelon", 10, false);
+        itemMap.put("watermelon", perchWater);
+      
+        Item perchSnake = new Item("snake", 60, false);
+        itemMap.put("snake", perchSnake);
+      
+        Item howlerNuts = new Item("barrel of nuts", 10, false);
+        itemMap.put("barrel of nuts", howlerNuts);
+      
+        Item howlerEggs = new Item("eggs", 3, false);
+        itemMap.put("eggs", howlerEggs);
+      
+        Item wildcatVole = new Item("vole", 0.06, false);
+        itemMap.put("vole", wildcatVole);
+      
+        Item wildcatStatue = new Item("Mini John Calipari Statue", 100, false);
+        itemMap.put("Mini John Calipari Statue", wildcatStatue);
+      
+        Item ocelotCard = new Item("cardinal", 0.1, false);
+        itemMap.put("cardinal", ocelotCard);
+      
+        Item ocelotShoot = new Item("Bamboo shoot", 2.2, false);
+        itemMap.put("Bamboo shoot", ocelotShoot);
+      
+        Item orangutanInsects = new Item("insects", 0.001, false);
+        itemMap.put("insects", orangutanInsects);
+      
+        Item orangutanFruits = new Item("fruits", 1.5, false);
+        itemMap.put("fruits", orangutanFruits);
+      
+        Item noInternetGrass = new Item("grass", 30, false);
+        itemMap.put("grass", noInternetGrass);
+      
+        Item noInternetPerson = new Item("A person who screams \"There is no WIFI!\"", 8.33, false);
+        itemMap.put("A person who screams \"There is no WIFI!\"", noInternetPerson);
     }
 
     /**
@@ -37,32 +106,11 @@ public class Game
     private void createRooms()
     {
         Room ocelot, lewin, perch, blobfish, den, tahseen, orangutan, howler, rhino, nope;
-
-        // creating the items
-        Item tahseenMud = new Item("mud", 8.33, false);
-        Item tahseenARandomCard = new Item("a random card", 0.06, false);
-        Item rhinoReed = new Item("reed", 0.22, false);
-        Item rhinoBeetle = new Item("beetles", 0.22, false);
-        Item denMouse = new Item("mouse", 0.05, false);
-        Item denSalt = new Item("bucket of salt", 100, false);
-        Item blobfishPer = new Item("A perpendicular sign that is upside down and upside down again (right side up) with Pranav’s face attached to it", 337, false);
-        Item blobfishRadio = new Item("radioactive slime", 25, false);
-        Item perchWater = new Item("watermelon", 10, false);
-        Item perchSnake = new Item("snake", 60, false);
-        Item howlerNuts = new Item("barrel of nuts", 10, false);
-        Item howlerEggs = new Item("eggs", 3, false);
-        Item wildcatVole = new Item("vole", 0.06, false);
-        Item wildcatStatue = new Item("Mini John Calipari Statue", 100, false);
-        Item ocelotCard = new Item("cardinal", 0.1, false);
-        Item ocelotShoot = new Item("Bamboo shoot", 2.2, false);
-        Item orangutanInsects = new Item("insects", 0.001, false);
-        Item orangutanFruits = new Item("fruits", 1.5, false);
-        Item noInternetGrass = new Item("grass", 30, false);
-        Item noInternetPerson = new Item("A person who screams \"There is no WIFI!\"", 8.33, false);
-        
+  
         // create the rooms
         ocelot = new Room("at the ocelot's hideout");
         lewin = new Room("at Mr. Lewin's Wildcat Kingdom");
+        winningRoom = lewin;
         perch = new Room("at the cardinal's perch");
         blobfish = new Room("at Pranav's blobfish kingdom");
         den = new Room("at the gorilla's den");
@@ -114,26 +162,26 @@ public class Game
 
         // initialize room items
 
-        tahseen.setItem(tahseenMud);
-        tahseen.setItem(tahseenARandomCard);
-        rhino.setItem(rhinoBeetle);
-        rhino.setItem(rhinoReed);
-        perch.setItem(perchSnake);
-        perch.setItem(perchWater);
-        den.setItem(denMouse);
-        den.setItem(denSalt);
-        blobfish.setItem(blobfishPer);
-        blobfish.setItem(blobfishRadio);
-        lewin.setItem(wildcatStatue);
-        lewin.setItem(wildcatVole);
-        ocelot.setItem(ocelotCard);
-        ocelot.setItem(ocelotShoot);
-        orangutan.setItem(orangutanFruits);
-        orangutan.setItem(orangutanInsects);
-        howler.setItem(howlerEggs);
-        howler.setItem(howlerNuts);
-        nope.setItem(noInternetPerson);
-        nope.setItem(noInternetGrass);
+        tahseen.addItem(itemMap.get("mud"));
+        tahseen.addItem(itemMap.get("special card"));
+        rhino.addItem(itemMap.get("beetles"));
+        rhino.addItem(itemMap.get("reed"));
+        perch.addItem(itemMap.get("watermelon"));
+        perch.addItem(itemMap.get("snake"));
+        den.addItem(itemMap.get("snake"));
+        den.addItem(itemMap.get("bucket of salt"));
+        blobfish.addItem(itemMap.get("radioactive slime"));
+        blobfish.addItem(itemMap.get("A perpendicular sign that is upside down and upside down again (right side up) with Pranav’s face attached to it"));
+        lewin.addItem(itemMap.get("Mini John Calipari Statue"));
+        lewin.addItem(itemMap.get("vole"));
+        ocelot.addItem(itemMap.get("cardinal"));
+        ocelot.addItem(itemMap.get("Bamboo shoot"));
+        orangutan.addItem(itemMap.get("insects"));
+        orangutan.addItem(itemMap.get("fruits"));
+        howler.addItem(itemMap.get("barrel of nuts"));
+        howler.addItem(itemMap.get("eggs"));
+        nope.addItem(itemMap.get("grass"));
+        nope.addItem(itemMap.get("A person who screams \"There is no WIFI!\""));
     }
 
     /**
@@ -150,6 +198,11 @@ public class Game
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            if (currentRoom == winningRoom) {
+              System.out.println("You won by reaching Mr. Lewin's Wildcat Kingdom!");
+              finished = true;
+            }
+            // create other winning situations
         }
         System.out.println("Thank you for playing. Good bye.");
     }
@@ -195,6 +248,12 @@ public class Game
         else if (commandWord.equals("look")) {
             lookInRoom(command);
         }
+        else if (commandWord.equals("pick")) {
+            pickItem(command);
+        }
+        else if (commandWord.equals("drop")) {
+            dropItem(command);
+        }
         // else command not recognised.
         return wantToQuit;
     }
@@ -235,6 +294,7 @@ public class Game
         if (nextRoom == null) {
             System.out.println("You can't enter this land.");
         }
+        // check conditions 
         else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
@@ -254,6 +314,52 @@ public class Game
         }
        }
       System.out.println(intro);
+    }
+
+    private void pickItem(Command command) {
+      if (command.hasSecondWord()) {
+        // get the item name from the command
+        String itemName = command.getSecondWord();
+        if (itemMap.containsKey(itemName)) {
+          Item item = itemMap.get(itemName);
+          
+          // remove the item name from the current room
+          currentRoom.removeItem(item);
+
+          // add the item to the player
+          player.addItem(item);
+        }
+        else {
+          System.out.println("Item does not exist.");
+        }
+        
+      }
+      else {
+        System.out.println("What Item?");
+      }
+    }
+
+    private void dropItem(Command command) {
+      if (command.hasSecondWord()) {
+        // get the item name from the command
+        String itemName = command.getSecondWord();
+        if (itemMap.containsKey(itemName)) {
+          Item item = itemMap.get(itemName);
+          
+          // remove the item name from the current room
+          currentRoom.addItem(item);
+
+          // add the item to the player
+          player.removeItem(item);
+        }
+        else {
+          System.out.println("Item does not exist.");
+        }
+        
+      }
+      else {
+        System.out.println("What Item?");
+      }
     }
   
     /** 

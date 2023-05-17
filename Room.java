@@ -44,10 +44,16 @@ public class Room
         exits.put(direction, neighbor);
     }
 
-    public void setItem(Item item) {
+    public void addItem(Item item) {
         
         items.add(item);
-    }    
+    }
+
+    public void removeItem(Item item) {
+      if (items.contains(item)) {
+        items.remove(item);
+      }
+    }
 
     /**
      * @return The short description of the room
