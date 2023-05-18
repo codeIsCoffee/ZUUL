@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class Room 
 {
+  
     private String description;
     private HashMap<String, Room> exits; // stores exits of this room.
     private ArrayList<Item> items = new ArrayList<Item>(); //stores items of this room
@@ -43,11 +44,25 @@ public class Room
     {
         exits.put(direction, neighbor);
     }
-
-    public void setItem(Item item) {
+  
+     /** 
+      * Adds an item to the ArrayList of items, which are in this room.
+      * @param item  a new item object to be added to the room
+      */
+    public void addItem(Item item) {
         
         items.add(item);
-    }    
+    }
+  
+     /** 
+      * Removes an item from the ArrayList of items, which are in this room.
+      * @param item  a new item object to be removed to the room
+      */
+    public void removeItem(Item item) {
+      if (items.contains(item)) {
+        items.remove(item);
+      }
+    }
 
     /**
      * @return The short description of the room
@@ -95,7 +110,25 @@ public class Room
         return exits.get(direction);
     }
 
+    /**
+     * Returns an ArrayList of the items in the room. 
+     * @return The items in the currentRoom.
+     */
     public ArrayList<Item> getItems() {
       return items;
     }
+
+    /**
+     * Returns whether this room has or does not have a certain item.
+     * @param an item object that is presumably in this room.
+     * @return whether the room has the item.
+     */
+    public boolean hasItem(Item item) {
+      for (Item aItem : items) {
+        if (aItem == item) {
+          return true;
+        } 
+      }
+      return false;
+  }
 }
